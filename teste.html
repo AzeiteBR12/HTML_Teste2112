@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Guerras Mundiais – Vestibular</title>
+    <style>
+        :root {
+            --azul-escuro: #1a3a5c;
+            --vermelho-escuro: #5c1a1a;
+            --amarelo-ouro: #c9a200;
+            --bg: #f4f0e8;
+            --papel: #fdfaf4;
+            --tinta: #1a1814;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, "Times New Roman", serif;
+            background: var(--bg);
+            color: var(--tinta);
+            padding: 1.2em;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* ── HEADER ── */
+        header {
+            text-align: center;
+            padding: 1.6em 1em 1.2em;
+            margin-bottom: 1.4em;
+            background: var(--papel);
+            border-radius: 14px;
+            border: 1px solid #ddd8c8;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--azul-escuro) 50%, var(--vermelho-escuro) 50%);
+        }
+
+        header h1 {
+            font-size: 1.6em;
+            color: var(--vermelho-escuro);
+            text-shadow: 0 0 8px rgba(139,26,26,0.2);
+            letter-spacing: 0.03em;
+            line-height: 1.2;
+        }
+
+        header p {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1em;
+            color: #6a5f4a;
+            margin-top: 0.3em;
+            line-height: 1.6;
+            letter-spacing: 0.01em;
+        }
+
+        /* ── SCORE BADGE ── */
+        .score-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.6em;
+            margin-bottom: 0.6em;
+            font-size: 0.88em;
+            color: #6a5a38;
+            font-style: italic;
+        }
+
+        .score-badge {
+            background: #fff7e0;
+            border: 2px solid var(--amarelo-ouro);
+            border-radius: 20px;
+            padding: 0.25em 0.9em;
+            font-weight: 600;
+            font-size: 1em;
+            color: #7a5c00;
+            transition: background 0.3s;
+        }
+
+        /* ── IMAGEM HERO ── */
+        .hero-img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            object-position: center 30%;
+            border-radius: 12px;
+            margin-bottom: 1.2em;
+            display: block;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+        }
+
+        /* ── ACCORDION ── */
+        .accordion {
+            margin-bottom: 1em;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .accordion-toggle {
+            width: 100%;
+            text-align: left;
+            padding: 0.85em 1.1em;
+            font-size: 1.05em;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            letter-spacing: 0.01em;
+            transition: filter 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .accordion-toggle:hover { filter: brightness(1.1); }
+
+        .accordion-toggle .arrow {
+            font-size: 0.75em;
+            transition: transform 0.28s cubic-bezier(.4,0,.2,1);
+            flex-shrink: 0;
+        }
+
+        .accordion-toggle.open .arrow { transform: rotate(180deg); }
+
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.38s cubic-bezier(.4,0,.2,1);
+            background: var(--papel);
+        }
+
+        .accordion-body.open { max-height: 1200px; }
+
+        .accordion-body-inner { padding: 1em; }
+
+        .acc-primeira .accordion-toggle {
+            background: var(--azul-escuro);
+            color: #c8e4ff;
+        }
+
+        .acc-segunda .accordion-toggle {
+            background: var(--vermelho-escuro);
+            color: #ffd0d0;
+        }
+
+        /* ── BALÕES ── */
+        .baloes { display: flex; flex-direction: column; gap: 0.8em; }
+
+        .balao {
+            border-radius: 14px;
+            padding: 0.9em 1.1em;
+            border-left: 6px solid rgba(0,0,0,0.12);
+        }
+
+        .balao h2 {
+            font-weight: bold;
+            margin-bottom: 0.25em;
+        }
+
+        .balao p { font-size: 0.97em; line-height: 1.55; color: #2a2520; }
+
+        .balao-amarelo { background: #fffbe6; border-left-color: #c9a200; }
+        .balao-amarelo h2 { color: #7a5c00; }
+
+        .balao-azul { background: #e8f4ff; border-left-color: #3a88c0; }
+        .balao-azul h2 { color: #1a5a99; }
+
+        .balao-laranja { background: #fff3e6; border-left-color: #c06010; }
+        .balao-laranja h2 { color: #8c4000; }
+
+        .balao-roxo { background: #f3e8ff; border-left-color: #6a20b0; }
+        .balao-roxo h2 { color: #5a1a90; }
+
+        /* ── QUESTÕES ── */
+        .questao {
+            background: var(--papel);
+            border: 2px solid #c03030;
+            border-radius: 12px;
+            padding: 1em 1.1em;
+            margin-bottom: 1em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+
+        .questao h2 {
+            font-size: 1.2em;
+            color: #8b1a1a;
+            margin-bottom: 0.55em;
+        }
+
+        .questao .enunciado {
+            font-size: 0.96em;
+            line-height: 1.5;
+            margin-bottom: 0.7em;
+            color: #2a2010;
+        }
+/* ── CARD PLACAR ── */
+.card-placar {
+    background: var(--papel);
+    border: 1.5px solid #d0c8b8;
+    border-top: 4px solid var(--amarelo-ouro);
+    border-radius: 12px;
+    padding: 1em 1.1em;
+    margin-bottom: 1.2em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    text-align: center;
+}
+
+.card-placar h2 {
+    font-size: 1.1em;
+    color: #7a5c00;
+    margin-bottom: 0.4em;
+}
+
+.card-placar p {
+    font-size: 0.95em;
+    color: #5a4a20;
+    margin-bottom: 0.3em;
+}
+
+.placar-numero {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #7a5c00;
+    background: #fff7e0;
+    border: 2px solid var(--amarelo-ouro);
+    border-radius: 8px; /* levemente menor */
+    display: inline-block;
+    padding: 0.2em 0.65em; /* antes: 0.25em 0.8em */
+}
+        /* ── ALTERNATIVAS CLICÁVEIS ── */
+        .alternativas { list-style: none; padding: 0; margin-bottom: 0.9em; }
+
+        .alternativas li {
+            margin-bottom: 0.4em;
+        }
+
+        .alt-btn {
+            width: 100%;
+            text-align: left;
+            background: var(--papel);  
+            border: 1.5px solid #d0c4a8;
+            border-radius: 8px;
+            padding: 0.5em 0.8em;
+            font-size: 0.94em;
+            color: var(--tinta);
+            cursor: pointer;
+            line-height: 1.4;
+            transition: background 0.18s, border-color 0.18s, transform 0.1s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .alt-btn:hover:not(:disabled) {
+            background: #fff3d0;
+            border-color: #c9a200;
+            transform: translateX(3px);
+        }
+
+        .alt-btn.correta {
+            background: #e6f7e6;
+            border-color: #2e8b2e;
+            color: #1a5c1a;
+            font-weight: 600;
+        }
+
+        .alt-btn.errada {
+            background: #fde8e8;
+            border-color: #c03030;
+            color: #8b1a1a;
+            text-decoration: line-through;
+            opacity: 0.75;
+        }
+
+        .alt-btn.revelar-correta {
+            background: #e6f7e6;
+            border-color: #2e8b2e;
+            color: #1a5c1a;
+            font-weight: 600;
+        }
+
+        .alt-btn:disabled { cursor: default; transform: none !important; }
+
+        /* ── RESPOSTA EXPLICATIVA ── */
+        .resposta-box {
+            display: none;
+            margin-top: 0.9em;
+            padding: 0.9em 1.1em;
+            background: #fde8e8;
+            border-left: 6px solid #c03030;
+            border-radius: 10px;
+            font-size: 0.95em;
+            color: #3a1010;
+            line-height: 1.55;
+        }
+
+        .resposta-box.visivel {
+            display: block;
+            animation: fadeSlide 0.25s ease;
+        }
+
+        .resposta-box.acerto {
+            background: #e6f7e6;
+            border-left-color: #2e8b2e;
+            color: #1a4a1a;
+        }
+
+        .resposta-box strong { color: #8b1a1a; }
+        .resposta-box.acerto strong { color: #1a6a1a; }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-5px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── DICAS ── */
+        .dica-enem {
+            background: #fffbe6;
+            border: 2px dashed #c9a200;
+            border-radius: 12px;
+            padding: 1em 1.1em;
+            margin-bottom: 1.2em;
+        }
+
+        .dica-enem h2 {
+            font-size: 1em;
+            margin-bottom: 0.5em;
+            color: #7a5c00;
+        }
+
+        .dica-enem p {
+            font-size: 0.93em;
+            line-height: 1.7;
+            color: #4a3a00;
+        }
+
+        /* ── BOTÃO TOPO ── */
+        #btn-topo {
+            position: fixed;
+            bottom: 1.4em;
+            right: 1.2em;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--vermelho-escuro);
+            color: #ffd0d0;
+            border: none;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 100;
+        }
+
+        #btn-topo.visivel {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #btn-topo:hover {
+            background: #8b1a1a;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            font-size: 0.8em;
+            color: #888070;
+            border-top: 1px solid #ddd;
+            padding-top: 1em;
+            margin-top: 0.5em;
+        }
+
+        footer h3 { margin: 0.7em 0 0.3em; font-size: 0.9em; color: #666055; }
+        footer ul { padding-left: 1em; }
+        footer a { color: #2c5f8a; }
+        /* ── Botão Modo diurno e Noturno── */
+        .btn-tema {
+            display: block;
+            margin: 0.8em auto 0; /* centraliza e joga pra baixo */
+            background: var(--papel);
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 0.6em 1.2em;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+.btn-tema:hover {
+    transform: scale(1.05);
+}
+body.dark {
+    --bg: #1a1814;
+    --papel: #252220;
+    --tinta: #e8e4dd;
+}  
+  body.dark .hero-img {
+    filter: brightness(0.8);
+}
+body.dark .balao-amarelo {
+    background: #2e2a00;
+    border-left-color: #c9a200;
+}
+
+body.dark .balao-azul {
+    background: #0a1f30;
+    border-left-color: #3a88c0;
+}
+
+body.dark .balao-laranja {
+    background: #2e1500;
+    border-left-color: #c06010;
+}
+
+body.dark .balao-roxo {
+    background: #1a0a2e;
+    border-left-color: #6a20b0;
+}
+body.dark .balao p {
+    color: #ddd8cf;
+}
+body.dark .questao,
+body.dark .card-placar,
+body.dark header {
+    background: #252220;
+    border-color: #3a3530;
+}
+
+/* balões: títulos e textos */
+body.dark .balao-amarelo h2 { color: #ffd447; text-shadow: 0 0 6px rgba(200,160,0,0.6); }
+body.dark .balao-azul h2    { color: #6ec1ff; text-shadow: 0 0 6px rgba(80,140,255,0.7); }
+body.dark .balao-laranja h2 { color: #ff944d; text-shadow: 0 0 6px rgba(255,120,40,0.7); }
+body.dark .balao-roxo h2    { color: #c77dff; text-shadow: 0 0 6px rgba(140,60,255,0.7); }
+
+/* cabeçalho */
+body.dark header h1 { color: #e8d6d6; text-shadow: 0 0 8px rgba(139,26,26,0.5); }
+body.dark header p { color: #998f80; }
+
+/* score badge / placar */
+body.dark .score-bar        { color: #998f80; }
+body.dark .score-badge      { background: #2e2a00; color: #ffd447; border-color: #c9a200; }
+body.dark .card-placar h2   { color: #ffd447; }
+body.dark .card-placar p    { color: #a89060; }
+body.dark .placar-numero    { background: #2e2a00; color: #ffd447; border-color: #c9a200; }
+
+/* questões */
+body.dark .questao h2       { color: #ff6b6b; text-shadow: 0 0 6px rgba(139,26,26,0.7); }
+body.dark .questao .enunciado { color: #ccc6bc; }
+
+/* alternativas */
+body.dark .alt-btn {
+    background: #2a2520;
+    border-color: #4a4540;
+    color: #e8e4dd;
+}
+body.dark .alt-btn:hover:not(:disabled) {
+    background: #2e2a00;
+    border-color: #c9a200;
+}
+body.dark .alt-btn.correta      { background: #0f2e0f; border-color: #2e8b2e; color: #7de07d; }
+body.dark .alt-btn.errada       { background: #2e0f0f; border-color: #c03030; color: #f07070; }
+body.dark .alt-btn.revelar-correta { background: #0f2e0f; border-color: #2e8b2e; color: #7de07d; }
+
+/* caixa de resposta */
+body.dark .resposta-box {
+    background: #2b0f0f;
+    border-left-color: #ff4d4d;
+    color: #f1dada;
+}
+body.dark .resposta-box.acerto {
+    background: #0f2e0f;
+    border-left-color: #2e8b2e;
+    color: #b0e0b0;
+}
+body.dark .resposta-box strong      { color: #ff8080; }
+body.dark .resposta-box.acerto strong { color: #7de07d; }
+
+/* dicas */
+body.dark .dica-enem {
+    background: #1e1a00;
+    border-color: #7a6200;
+}
+body.dark .dica-enem h2 { color: #c9a200; }
+body.dark .dica-enem p  { color: #a89060; }
+
+/* botão tema */
+body.dark .btn-tema {
+    background: #2a2520;
+    border-color: #555048;
+    color: #e8e4dd;
+}
+
+/* accordion body */
+body.dark .accordion-body { background: #252220; }
+
+/* footer */
+body.dark footer         { color: #665f55; border-top-color: #333; }
+body.dark footer h3      { color: #887f72; }
+body.dark footer a       { color: #6a9fc0; }
+</style>
+</head>
+<body>
+
+<button id="btn-topo" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Voltar ao topo">▲</button>
+
+<header>
+    <h1>Guerras Mundiais no Vestibular</h1>
+    <p>Material de revisão para o Ensino Médio</p>
+
+    <button id="toggleTema" class="btn-tema">🌙 Modo escuro</button>
+</header>
+<main>
+    <img class="hero-img"
+         src="https://static.nationalgeographicbrasil.com/files/styles/image_3200/public/dday3.webp?w=1600&h=900"
+         alt="Soldados no Dia D – Segunda Guerra Mundial">
+
+    <!-- ══ 1ª GUERRA ══ -->
+    <div class="accordion acc-primeira">
+        <button class="accordion-toggle" onclick="toggleAcc(this)">
+            🌍 Primeira Guerra Mundial (1914–1918)
+            <span class="arrow">▼</span>
+        </button>
+        <div class="accordion-body">
+            <div class="accordion-body-inner">
+                <div class="baloes">
+                    <div class="balao balao-amarelo">
+                        <h2>1. Causas</h2>
+                        <p>Imperialismo, nacionalismo exacerbado e a política de alianças (Tríplice Entente vs. Tríplice Aliança).</p>
+                    </div>
+                    <div class="balao balao-azul">
+                        <h2>2. Estopim</h2>
+                        <p>Assassinato do arquiduque Francisco Ferdinando em Sarajevo, em 28 de junho de 1914.</p>
+                    </div>
+                    <div class="balao balao-laranja">
+                        <h2>3. Fases</h2>
+                        <p>Guerra de Movimento (1914), Guerra de Trincheiras (1915–1917) e o retorno da movimentação com a entrada dos EUA (1917) e saída da Rússia.</p>
+                    </div>
+                    <div class="balao balao-roxo">
+                        <h2>4. Consequência chave</h2>
+                        <p>Tratado de Versalhes (1919), que humilhou a Alemanha e plantou as sementes do próximo conflito.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ 2ª GUERRA ══ -->
+    <div class="accordion acc-segunda">
+        <button class="accordion-toggle" onclick="toggleAcc(this)">
+            🌏 Segunda Guerra Mundial (1939–1945)
+            <span class="arrow">▼</span>
+        </button>
+        <div class="accordion-body">
+            <div class="accordion-body-inner">
+                <div class="baloes">
+                    <div class="balao balao-amarelo">
+                        <h2>1. Causas</h2>
+                        <p>Revanchismo alemão, crise de 1929, falha da Liga das Nações e expansionismo nazifascista.</p>
+                    </div>
+                    <div class="balao balao-azul">
+                        <h2>2. Estopim</h2>
+                        <p>A invasão da Polônia pela Alemanha nazista em 1º de setembro de 1939. França e Reino Unido declararam guerra dois dias depois.</p>
+                    </div>
+                    <div class="balao balao-laranja">
+                        <h2>3. Fases</h2>
+                        <p>Expansão do Eixo (1939–1941), equilíbrio com entrada de EUA/URSS (1941–1943) e vitória dos Aliados (1943–1945).</p>
+                    </div>
+                    <div class="balao balao-roxo">
+                        <h2>4. Consequência chave</h2>
+                        <p>Milhões de mortes, criação da ONU (1945) e início da Guerra Fria entre EUA e URSS.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ PLACAR ══ -->
+    <div class="card-placar">
+    <h2>📊 Desempenho</h2>
+    <p>Acertos:</p>
+    <div class="placar-numero" id="placar">0 / 0</div>
+</div>
+
+    <!-- ══ QUESTÃO 1 ══ -->
+    <div class="questao" data-gabarito="e">
+        <h2>📝 Questão 1 — Unesp</h2>
+        <p class="enunciado">A Primeira Guerra Mundial (1914–1918) resultou de uma alteração da ordem institucional vigente em longo período do século XIX. Entre os motivos desta alteração, destacam-se:</p>
+        <ul class="alternativas">
+            <li><button class="alt-btn" onclick="responder(this, 'a', 1)">a) a divisão do mundo em dois blocos ideologicamente antagônicos e a constituição de países industrializados na América.</button></li>
+            <li><button class="alt-btn" onclick="responder(this, 'b', 1)">b) a desestabilização da sociedade europeia com a emergência do socialismo e a constituição de governos fascistas nos países europeus.</button></li>
+            <li><button class="alt-btn" onclick="responder(this, 'c', 1)">c) o domínio econômico dos mercados do continente europeu pela Inglaterra e o cerco da Rússia pelo capitalismo.</button></li>
+            <li><button class="alt-btn" onclick="responder(this, 'd', 1)">d) a oposição da França à divisão de seu território após as guerras napoleônicas e a aproximação entre a Inglaterra e a Alemanha.</button></li>
+            <li><button class="alt-btn" onclick="responder(this, 'e', 1)">e) a unificação da Alemanha e os conflitos entre as potências suscitados pela anexação de áreas coloniais na Ásia e na África.</button></li>
+        </ul>
+        <div class="resposta-box" id="resp1">
+            <p>✅ Resposta correta: <strong>Letra E</strong></p>
+            <p style="margin-top:0.5em">A unificação alemã (1871) criou uma nova potência que desequilibrou a ordem europeia. A corrida por colônias na Ásia e África gerou rivalidades diretas — especialmente entre Alemanha, França e Inglaterra. As outras alternativas trazem eventos posteriores à 1ª Guerra (fascismo, blocos da Guerra Fria) ou causas que não se sustentam historicamente.</p>
+        </div>
+    </div>
+
+    <!-- ══ QUESTÃO 2 ══ -->
+    <div class="questao" data-gabarito="c">
+        <h2>📝 Questão 2 — Fuvest</h2>
+        <p class="enunciado">O Tratado de Versalhes (1919), que encerrou a Primeira Guerra Mundial, é apontado por historiadores como um dos principais fatores que levaram ao surgimento da Segunda Guerra. Isso se deve principalmente porque o tratado:</p>
+        <ul class="alternativas">
+            <li><button class="alt-btn" onclick="responder(this, 'a', 2)">a) estabeleceu a criação da Liga das Nações como organismo de manutenção da paz mundial.</button></li>
+            <li><button class="alt-btn" onclick="responder(this, 'b', 2)">b) redistribuiu as colônias alemãs entre França e Inglaterra, reduzindo tensões na Europa.</button></li>
+            <li><button class="alt-btn" onclick="responder(this, 'c', 2)">c) impôs à Alemanha condições humilhantes — reparações pesadas, perda de territórios e limitação militar —, gerando ressentimento que o nazismo explorou.</button></li>
+            <li><button class="alt-btn" onclick="responder(this, 'd', 2)">d) dividiu a Europa em zonas de influência entre as grandes potências vencedoras.</button></li>
+        </ul>
+        <div class="resposta-box" id="resp2">
+            <p>✅ Resposta correta: <strong>Letra C</strong></p>
+            <p style="margin-top:0.5em">O Tratado de Versalhes responsabilizou a Alemanha pela guerra ("cláusula de culpa de guerra"), exigiu reparações bilionárias, retirou territórios como a Alsácia-Lorena e limitou o exército alemão a 100 mil homens. Essa humilhação criou caldo de cultura para o crescimento do nazismo e do discurso revanchista de Hitler.</p>
+        </div>
+    </div>
+
+    <!-- ══ DICAS ══ -->
+    <div class="dica-enem">
+        <h2>⭐ Dicas de estudo</h2>
+        <p>
+            <strong>Brasil na 2ª Guerra:</strong> atenção à participação da FEB (Força Expedicionária Brasileira) na Itália.<br>
+            <strong>Transversalidade:</strong> relacione com a geopolítica atual — ONU, OTAN e conflitos regionais.<br>
+            <strong>Pratique:</strong> resolva provas anteriores de Enem, Fuvest e Unesp sobre o tema.
+        </p>
+    </div>
+
+</main>
+
+<footer>
+    <p>Material de Revisão para Estudantes | Feito por Luiz Fernando, Stephane e Maria Eduarda Borges</p>
+    <h3>Fontes do conteúdo:</h3>
+    <ul>
+        <li><a href="https://www.todamateria.com.br/causas-da-primeira-guerra-mundial/" target="_blank">Toda Matéria – Causas da Primeira Guerra Mundial</a></li>
+        <li><a href="https://www.todamateria.com.br/primeira-guerra-mundial/" target="_blank">Toda Matéria – Primeira Guerra Mundial</a></li>
+        <li><a href="https://www.todamateria.com.br/fases-da-primeira-guerra-mundial/" target="_blank">Toda Matéria – Fases da Primeira Guerra Mundial</a></li>
+        <li><a href="https://www.todamateria.com.br/tratado-de-versalhes/" target="_blank">Toda Matéria – Tratado de Versalhes</a></li>
+        <li><a href="https://www.todamateria.com.br/segunda-guerra-mundial/" target="_blank">Toda Matéria – Segunda Guerra Mundial</a></li>
+        <li><a href="https://www.todamateria.com.br/consequencias-da-segunda-guerra-mundial/" target="_blank">Toda Matéria – Consequências da Segunda Guerra Mundial</a></li>
+    </ul>
+    <h3>Fonte da imagem:</h3>
+    <ul>
+        <li><a href="https://www.nationalgeographicbrasil.com" target="_blank">National Geographic Brasil</a></li>
+    </ul>
+</footer>
+
+<script>
+    // ── ACCORDION EXCLUSIVO ──
+    function toggleAcc(btn) {
+        const body = btn.nextElementSibling;
+        const isOpen = body.classList.contains('open');
+
+        // fecha todos
+        document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+        document.querySelectorAll('.accordion-toggle').forEach(b => b.classList.remove('open'));
+
+        // abre o clicado (se estava fechado)
+        if (!isOpen) {
+            body.classList.add('open');
+            btn.classList.add('open');
+        }
+    }
+
+    // ── SISTEMA DE QUESTÕES ──
+    let acertos = 0;
+    let respondidas = 0;
+
+    function responder(btn, letra, questaoNum) {
+        const questao = btn.closest('.questao');
+        const gabarito = questao.dataset.gabarito;
+        const respostaBox = document.getElementById('resp' + questaoNum);
+        const botoes = questao.querySelectorAll('.alt-btn');
+
+        // desabilita todos os botões da questão
+        botoes.forEach(b => b.disabled = true);
+
+        respondidas++;
+
+        if (letra === gabarito) {
+            btn.classList.add('correta');
+            respostaBox.classList.add('acerto');
+            acertos++;
+        } else {
+            btn.classList.add('errada');
+            // destaca a correta
+            botoes.forEach(b => {
+                if (b.textContent.trim().startsWith(gabarito + ')')) {
+                    b.classList.add('revelar-correta');
+                }
+            });
+        }
+
+        respostaBox.classList.add('visivel');
+        atualizarPlacar();
+    }
+
+    function atualizarPlacar() {
+        document.getElementById('placar').textContent = acertos + ' / ' + respondidas;
+    }
+
+    // ── BOTÃO TOPO ──
+    const btnTopo = document.getElementById('btn-topo');
+    window.addEventListener('scroll', () => {
+        btnTopo.classList.toggle('visivel', window.scrollY > 200);
+    });
+
+    // ── BOTÃO TEMA ──
+    const btn = document.getElementById("toggleTema");
+    btn.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        btn.textContent = document.body.classList.contains("dark") ? "☀️ Modo claro" : "🌙 Modo escuro";
+    });
+</script>
+</body>
+  </html>
